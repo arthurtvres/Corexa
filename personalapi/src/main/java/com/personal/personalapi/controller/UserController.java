@@ -3,11 +3,7 @@ package com.personal.personalapi.controller;
 import com.personal.personalapi.dto.UserDTO;
 import com.personal.personalapi.model.User;
 import com.personal.personalapi.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +22,19 @@ public class UserController
         return userService.salvarUsuario(userDTO);
     }
 
+    @GetMapping("/{id}")
+    public User findAlunoById(@PathVariable Long id) {
+        return userService.findUserById(id);
+    }
+
     @GetMapping
-    public List<User> listarUsuarios() {
+    public List<User> listAllAlunos() {
         return userService.listarUsuarios();
+    }
+
+    @DeleteMapping
+    public void deletarUsuario(@RequestParam Long id) {
+        userService.deletarUsuario(id);
     }
 
 }

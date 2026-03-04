@@ -28,9 +28,28 @@ public class DietaService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Dieta dieta = new Dieta();
+        dieta.setNome(dietaDTO.getNome());
         dieta.setDescricao(dietaDTO.getDescricao());
         dieta.setAluno(user);
 
         return dietaRepository.save(dieta);
+    }
+
+    public Dieta findDietaById(Long id) {
+        return dietaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dieta não encontrada"));
+    }
+
+    public Dieta findDietaByUserId(Long userId) {
+        return dietaRepository.findByAlunoId(userId)
+                .orElseThrow(() -> new RuntimeException("Dieta não encontrada para o usuário " + userId));
+    }
+
+    public List<Dieta> findAllDietasByUserId(Long userId) {
+        return dietaRepository.findAllByAlunoId(userId);
+    }
+
+    public void deletarDieta(Long id) {
+        dietaRepository.deleteById(id);
     }
 }

@@ -27,4 +27,13 @@ public class UserService {
         user.setRole(userDTO.getRole());
         return userRepository.save(user);
     }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    public void deletarUsuario(Long id) {
+        userRepository.deleteById(id);
+    }
 }

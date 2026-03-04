@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DietaDTO {
+    private String nome;
     private String descricao;
     private Long userId;
 }

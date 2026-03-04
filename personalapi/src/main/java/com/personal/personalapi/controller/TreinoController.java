@@ -25,4 +25,19 @@ public class TreinoController {
     public List<Treino> listarTreino() {
         return treinoService.listarTreinos();
     }
+
+    @GetMapping("/{id}")
+    public Treino findTreinoById(@PathVariable Long id) {
+        return treinoService.findTreinoById(id);
+    }
+
+    @GetMapping("/usuario/{userId}/todos")
+    public List<Treino> findAllTreinosByUserId(@PathVariable Long userId) {
+        return treinoService.findAllTreinosByUserId(userId);
+    }
+
+    @DeleteMapping
+    public void deleteTreino(@RequestParam Long id) {
+        treinoService.deleteTreino(id);
+    }
 }

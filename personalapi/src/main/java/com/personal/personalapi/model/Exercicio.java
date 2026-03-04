@@ -1,9 +1,6 @@
 package com.personal.personalapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +16,8 @@ public class Exercicio {
     private String nome;
     private String descricao;
     private String gifurl;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User aluno;
 }

@@ -3,11 +3,7 @@ package com.personal.personalapi.controller;
 import com.personal.personalapi.dto.DietaDTO;
 import com.personal.personalapi.model.Dieta;
 import com.personal.personalapi.service.DietaService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,4 +27,23 @@ public class DietaController {
         return dietaService.listarDietas();
     }
 
+    @GetMapping("/{id}")
+    public Dieta findDietaById(@PathVariable Long id) {
+        return dietaService.findDietaById(id);
+    }
+
+    @GetMapping("/usuario/{userId}")
+    public Dieta findDietaByUserId(@PathVariable Long userId) {
+        return dietaService.findDietaByUserId(userId);
+    }
+
+    @GetMapping("/usuario/{userId}/todas")
+    public List<Dieta> findAllDietasByUserId(@PathVariable Long userId) {
+        return dietaService.findAllDietasByUserId(userId);
+    }
+
+    @DeleteMapping
+    public void deletarDieta(@RequestParam Long id) {
+        dietaService.deletarDieta(id);
+    }
 }

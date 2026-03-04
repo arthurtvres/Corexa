@@ -7,5 +7,6 @@ public class ExercicioDTO {
     private String nome;
     private String descricao;
     private String gifurl;
+    private Long userId;
 }
 

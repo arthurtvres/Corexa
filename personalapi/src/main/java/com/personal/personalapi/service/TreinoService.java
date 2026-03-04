@@ -35,4 +35,17 @@ public class TreinoService {
         return treinoRepository.save(treino);
     }
 
+    public Treino findTreinoById(Long id) {
+        return treinoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Treino não encontrado"));
+    }
+
+    public List<Treino> findAllTreinosByUserId(Long userId) {
+        return treinoRepository.findAllByAlunoId(userId);
+    }
+
+    public void deleteTreino(Long id) {
+        treinoRepository.deleteById(id);
+    }
+
 }
