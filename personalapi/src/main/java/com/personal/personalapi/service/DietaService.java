@@ -30,6 +30,30 @@ public class DietaService {
         Dieta dieta = new Dieta();
         dieta.setNome(dietaDTO.getNome());
         dieta.setDescricao(dietaDTO.getDescricao());
+        dieta.setObjetivo(dietaDTO.getObjetivo());
+        dieta.setCaloriasDiarias(dietaDTO.getCaloriasDiarias());
+        dieta.setProteinasGramas(dietaDTO.getProteinasGramas());
+        dieta.setCarboidratosGramas(dietaDTO.getCarboidratosGramas());
+        dieta.setGordurasGramas(dietaDTO.getGordurasGramas());
+        dieta.setAluno(user);
+
+        return dietaRepository.save(dieta);
+    }
+
+    public Dieta atualizarDieta(Long id, DietaDTO dietaDTO) {
+        Dieta dieta = dietaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dieta não encontrada"));
+
+        User user = userRepository.findById(dietaDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        dieta.setNome(dietaDTO.getNome());
+        dieta.setDescricao(dietaDTO.getDescricao());
+        dieta.setObjetivo(dietaDTO.getObjetivo());
+        dieta.setCaloriasDiarias(dietaDTO.getCaloriasDiarias());
+        dieta.setProteinasGramas(dietaDTO.getProteinasGramas());
+        dieta.setCarboidratosGramas(dietaDTO.getCarboidratosGramas());
+        dieta.setGordurasGramas(dietaDTO.getGordurasGramas());
         dieta.setAluno(user);
 
         return dietaRepository.save(dieta);

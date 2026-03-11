@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "exercicios")
 public class Exercicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String nome;
     private String descricao;
-    private String gifurl;
+    private int series;
+    private int repeticoes;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User aluno;
+    @JoinColumn(name = "treino_id")
+    private Treino treino;
 }

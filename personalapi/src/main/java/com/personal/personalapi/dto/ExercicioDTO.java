@@ -6,7 +6,8 @@ import lombok.Data;
 public class ExercicioDTO {
     private String nome;
     private String descricao;
-    private String gifurl;
-    private Long userId;
+    private int series;
+    private int repeticoes;
+    private Long treinoId;
 }
 

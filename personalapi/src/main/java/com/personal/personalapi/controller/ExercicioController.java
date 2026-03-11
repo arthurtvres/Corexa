@@ -3,12 +3,8 @@ package com.personal.personalapi.controller;
 import com.personal.personalapi.dto.ExercicioDTO;
 import com.personal.personalapi.model.Exercicio;
 import com.personal.personalapi.service.ExercicioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,8 +19,9 @@ public class ExercicioController {
     }
 
     @PostMapping
-    public Exercicio criar(@RequestBody ExercicioDTO exercicioDTO) {
-        return exercicioService.salvarExercicio(exercicioDTO);
+    public ResponseEntity<Exercicio> criarExercicio(@RequestBody ExercicioDTO exercicioDTO) {
+        Exercicio exercicio = exercicioService.salvarExercicio(exercicioDTO);
+        return ResponseEntity.status(201).body(exercicio);
     }
 
     @GetMapping
@@ -37,19 +34,21 @@ public class ExercicioController {
         return exercicioService.findExercicioById(id);
     }
 
-    @GetMapping("/usuario/{userId}")
-    public Exercicio findExercicioByUserId(@PathVariable Long userId) {
-        return exercicioService.findExercicioByUserId(userId);
+    @PutMapping("/{id}")
+    public ResponseEntity<Exercicio> atualizarExercicio(@PathVariable Long id, @RequestBody ExercicioDTO exercicioDTO) {
+        Exercicio exercicio = exercicioService.atualizarExercicio(id, exercicioDTO);
+        return ResponseEntity.ok(exercicio);
     }
 
-    @GetMapping("/usuario/{userId}/todos")
-    public List<Exercicio> findAllExerciciosByUserId(@PathVariable Long userId) {
-        return exercicioService.findAllExerciciosByUserId(userId);
+    @GetMapping("/treino/{treinoId}")
+    public List<Exercicio> findAllExerciciosByTreinoId(@PathVariable Long treinoId) {
+        return exercicioService.findAllExerciciosByTreinoId(treinoId);
     }
 
-    @DeleteMapping
-    public void deletarExercicio(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarExercicio(@PathVariable Long id) {
         exercicioService.deletarExercicio(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

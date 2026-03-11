@@ -4,10 +4,7 @@ import com.personal.personalapi.model.Exercicio;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ExercicioRepository extends JpaRepository<Exercicio, Long> {
-    Optional<Exercicio> findByAlunoId(Long alunoId);
-
-    List<Exercicio> findAllByAlunoId(Long alunoId);
+    List<Exercicio> findAllByTreinoId(Long treinoId);
 }
