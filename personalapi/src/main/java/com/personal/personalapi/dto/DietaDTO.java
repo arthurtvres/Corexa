@@ -14,5 +14,9 @@ public class DietaDTO {
     private double carboidratosGramas;
     private double gordurasGramas;
     private Long userId;
+
+
+
+
 }
 
