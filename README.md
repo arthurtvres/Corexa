@@ -47,6 +47,28 @@ java -jar .\target\personalapi-0.0.1-SNAPSHOT.jar
 
 API disponivel em: `http://localhost:8080`
 
+## Execucao com Docker
+Na pasta `personalapi`:
+
+```powershell
+docker build -t personalapi:latest .
+docker run --rm -p 8080:8080 personalapi:latest
+```
+
+- A imagem multi-stage definida em `personalapi/Dockerfile` compila o JAR com Maven e o executa em um JRE leve.
+- Ajuste variaveis de ambiente via `docker run -e` se precisar apontar para outro banco.
+
+## Execucao com Docker Compose
+`personalapi/docker-compose.yml` orquestra a aplicacao e um PostgreSQL 16.
+
+```powershell
+docker compose up --build
+```
+
+- Banco exposto localmente em `localhost:5433` (container 5432) com credenciais `postgres / 1512` e base `personaldb`.
+- A aplicacao recebe as configuracoes via `SPRING_DATASOURCE_*`, portanto nao e necessario editar `application.properties` para o ambiente de containers.
+- Para encerrar tudo e remover o volume de dados: `docker compose down -v`.
+
 ## Documentacao da API
 Com a aplicacao em execucao:
 - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
