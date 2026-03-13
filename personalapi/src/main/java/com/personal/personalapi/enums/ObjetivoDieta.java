@@ -1,41 +1,36 @@
 package com.personal.personalapi.enums;
 
-public enum ObjetivoDieta {
+public enum DietGoal {
 
-    PERDA_DE_PESO("Perda de peso"),
-    GANHO_DE_MUSCULO("Ganho de músculo"),
-    MANUTENCAO_DE_PESO("Manutenção de peso"),
-    MELHORIA_DE_SAUDE("Melhoria de saúde"),
-    AUMENTO_DE_ENERGIA("Aumento de energia");
+    WEIGHT_LOSS("Weight loss"),
+    MUSCLE_GAIN("Muscle gain"),
+    WEIGHT_MAINTENANCE("Weight maintenance"),
+    HEALTH_IMPROVEMENT("Health improvement"),
+    ENERGY_BOOST("Energy boost");
 
-    private final String descricao;
+    private final String description;
 
-    ObjetivoDieta(String descricao) {
-        this.descricao = descricao;
+    DietGoal(String description) {
+        this.description = description;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public static ObjetivoDieta fromString(String value) {
+    public static DietGoal fromString(String value) {
         if (value == null) {
             return null;
         }
         String normalized = value
                 .trim()
                 .toUpperCase()
-                .replace(" ", "_")
-                .replace("Ç", "C")
-                .replace("Ã", "A")
-                .replace("Â", "A")
-                .replace("Ê", "E")
-                .replace("É", "E");
-        for (ObjetivoDieta objetivo : values()) {
-            if (objetivo.name().equals(normalized)) {
-                return objetivo;
+                .replace(" ", "_");
+        for (DietGoal goal : values()) {
+            if (goal.name().equals(normalized)) {
+                return goal;
             }
         }
-        throw new IllegalArgumentException("Objetivo de dieta inválido: " + value);
+        throw new IllegalArgumentException("Invalid diet goal: " + value);
     }
 }

@@ -1,43 +1,64 @@
-# personalAPI
-API RESTful em Spring Boot para gerenciamento de usuarios, treinos, exercicios e dietas.
+# Personal Trainer API
 
-## Visao geral
-O projeto esta organizado em camadas:
-- `com.personal.personalapi.controller` - endpoints REST
-- `com.personal.personalapi.service` - regras de negocio
-- `com.personal.personalapi.repository` - acesso a dados com Spring Data JPA
-- `com.personal.personalapi.model` - entidades JPA
-- `com.personal.personalapi.dto` - objetos de entrada para criacao/atualizacao
-- `com.personal.personalapi.config` - configuracoes (OpenAPI/Swagger)
+API RESTful desenvolvida com **Spring Boot** para gerenciamento de **usuários, treinos, exercícios e dietas**.
 
-## Stack utilizada
-- Java 17
-- Spring Boot 3.5.11
-- Spring Web
-- Spring Data JPA
-- PostgreSQL (driver runtime)
-- Lombok
-- Springdoc OpenAPI (`springdoc-openapi-starter-webmvc-ui` 2.8.6)
+---
 
-## Configuracao atual
-Arquivo: `personalapi/src/main/resources/application.properties`
+# Visão Geral
 
-- Porta da aplicacao: `8080`
-- Banco configurado: PostgreSQL
-- URL atual: `jdbc:postgresql://localhost:5433/personaldb`
-- Hibernate DDL: `update`
+O projeto segue uma **arquitetura em camadas**:
 
-> Ajuste URL, usuario e senha do banco no `application.properties` conforme seu ambiente.
+* `com.personal.personalapi.controller` → endpoints REST da aplicação
+* `com.personal.personalapi.service` → regras de negócio
+* `com.personal.personalapi.repository` → acesso ao banco com Spring Data JPA
+* `com.personal.personalapi.model` → entidades JPA
+* `com.personal.personalapi.dto` → objetos de entrada para criação/atualização
+* `com.personal.personalapi.config` → configurações da aplicação (Swagger/OpenAPI)
 
-## Como executar (Windows)
-Na pasta `personalapi`:
+---
+
+# Tecnologias Utilizadas
+
+* Java 17
+* Spring Boot 3.5.11
+* Spring Web
+* Spring Data JPA
+* PostgreSQL
+* Lombok
+* Springdoc OpenAPI (`springdoc-openapi-starter-webmvc-ui` 2.8.6)
+* Docker
+* Docker Compose
+
+---
+
+# Configuração da Aplicação
+
+Arquivo:
+
+`personalapi/src/main/resources/application.properties`
+
+Configuração atual:
+
+* Porta da aplicação: `8080`
+* Banco de dados: PostgreSQL
+* URL atual:
+  `jdbc:postgresql://localhost:5433/personaldb`
+* Estratégia do Hibernate: `update`
+
+Ajuste usuário, senha e URL conforme o seu ambiente.
+
+---
+
+# Como Executar (Windows)
+
+Dentro da pasta `personalapi`:
 
 ```powershell
 cd .\personalapi
 .\mvnw.cmd spring-boot:run
 ```
 
-Ou gerar JAR e executar:
+Ou gerar o JAR:
 
 ```powershell
 cd .\personalapi
@@ -45,112 +66,192 @@ cd .\personalapi
 java -jar .\target\personalapi-0.0.1-SNAPSHOT.jar
 ```
 
-API disponivel em: `http://localhost:8080`
+A API estará disponível em:
 
-## Execucao com Docker
-Na pasta `personalapi`:
+```
+http://localhost:8080
+```
+
+---
+
+# Execução com Docker
+
+Dentro da pasta `personalapi`:
 
 ```powershell
 docker build -t personalapi:latest .
 docker run --rm -p 8080:8080 personalapi:latest
 ```
 
-- A imagem multi-stage definida em `personalapi/Dockerfile` compila o JAR com Maven e o executa em um JRE leve.
-- Ajuste variaveis de ambiente via `docker run -e` se precisar apontar para outro banco.
+O `Dockerfile` utiliza **build multi-stage** para compilar o projeto com Maven e executar em um container com JRE leve.
 
-## Execucao com Docker Compose
-`personalapi/docker-compose.yml` orquestra a aplicacao e um PostgreSQL 16.
+Caso necessário, variáveis de ambiente podem ser passadas usando `-e`.
+
+---
+
+# Execução com Docker Compose
+
+O arquivo `personalapi/docker-compose.yml` sobe:
+
+* API Spring Boot
+* PostgreSQL 16
+
+Executar:
 
 ```powershell
 docker compose up --build
 ```
 
-- Banco exposto localmente em `localhost:5433` (container 5432) com credenciais `postgres / 1512` e base `personaldb`.
-- A aplicacao recebe as configuracoes via `SPRING_DATASOURCE_*`, portanto nao e necessario editar `application.properties` para o ambiente de containers.
-- Para encerrar tudo e remover o volume de dados: `docker compose down -v`.
+Configuração do banco:
 
-## Documentacao da API
-Com a aplicacao em execucao:
-- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
-- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+* Host: `localhost`
+* Porta: `5433`
+* Usuário: `postgres`
+* Senha: `1512`
+* Banco: `personaldb`
 
-## Endpoints
-### Users (`/users`)
-- `POST /users` - cria usuario
-- `GET /users` - lista usuarios
-- `GET /users/{id}` - busca usuario por id
-- `DELETE /users?id={id}` - remove usuario por query param
+Para parar e remover os containers e volumes:
 
-### Treino (`/treino`)
-- `POST /treino` - cria treino
-- `GET /treino` - lista treinos
-- `GET /treino/{id}` - busca treino por id
-- `GET /treino/usuario/{userId}/todos` - lista treinos de um usuario
-- `DELETE /treino?id={id}` - remove treino por query param
+```powershell
+docker compose down -v
+```
 
-### Exercicios (`/exercicios`)
-- `POST /exercicios` - cria exercicio
-- `GET /exercicios` - lista exercicios
-- `GET /exercicios/{id}` - busca exercicio por id
-- `PUT /exercicios/{id}` - atualiza exercicio
-- `GET /exercicios/treino/{treinoId}` - lista exercicios de um treino
-- `DELETE /exercicios/{id}` - remove exercicio
+---
 
-### Dieta (`/dieta`)
-- `POST /dieta` - cria dieta
-- `GET /dieta` - lista dietas
-- `GET /dieta/{id}` - busca dieta por id
-- `PUT /dieta/{id}` - atualiza dieta
-- `DELETE /dieta/{id}` - remove dieta
-- `GET /dieta/usuario/{userId}` - busca uma dieta do usuario
-- `GET /dieta/usuario/{userId}/todas` - lista todas as dietas do usuario
+# Documentação da API
 
-## DTOs de entrada
-### `UserDTO`
+Com a aplicação rodando:
+
+Swagger UI
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+OpenAPI JSON
+
+```
+http://localhost:8080/v3/api-docs
+```
+
+---
+
+# Endpoints
+
+## Users (`/users`)
+
+| Method | Endpoint      | Descrição      |
+| ------ | ------------- | -------------- |
+| POST   | `/users`      | Create user    |
+| GET    | `/users`      | List users     |
+| GET    | `/users/{id}` | Get user by id |
+| DELETE | `/users/{id}` | Delete user    |
+
+---
+
+## Workouts (`/workouts`)
+
+| Method | Endpoint                      | Descrição                     |
+| ------ | ----------------------------- | ----------------------------- |
+| POST   | `/workouts`                   | Create workout                |
+| GET    | `/workouts`                   | List workouts                 |
+| GET    | `/workouts/{id}`              | Get workout by id             |
+| GET    | `/workouts/user/{userId}/all` | List all workouts from a user |
+| DELETE | `/workouts/{id}`              | Delete workout                |
+
+---
+
+## Exercises (`/exercises`)
+
+| Method | Endpoint                         | Descrição                     |
+| ------ | -------------------------------- | ----------------------------- |
+| POST   | `/exercises`                     | Create exercise               |
+| GET    | `/exercises`                     | List exercises                |
+| GET    | `/exercises/{id}`                | Get exercise by id            |
+| PUT    | `/exercises/{id}`                | Update exercise               |
+| GET    | `/exercises/workout/{workoutId}` | List exercises from a workout |
+| DELETE | `/exercises/{id}`                | Delete exercise               |
+
+---
+
+## Diets (`/diets`)
+
+| Method | Endpoint                   | Descrição                  |
+| ------ | -------------------------- | -------------------------- |
+| POST   | `/diets`                   | Create diet                |
+| GET    | `/diets`                   | List diets                 |
+| GET    | `/diets/{id}`              | Get diet by id             |
+| PUT    | `/diets/{id}`              | Update diet                |
+| DELETE | `/diets/{id}`              | Delete diet                |
+| GET    | `/diets/user/{userId}`     | Get user's diet            |
+| GET    | `/diets/user/{userId}/all` | List all diets from a user |
+
+---
+
+# Exemplos de DTO
+
+## UserDTO
+
 ```json
 {
-  "name": "Joao",
+  "name": "João",
   "email": "joao@email.com",
   "password": "123456",
   "role": "ALUNO"
 }
 ```
 
-### `TreinoDTO`
+---
+
+## WorkoutDTO
+
 ```json
 {
-  "nome": "Treino A",
-  "descricao": "Treino de peito e triceps",
+  "name": "Treino A",
+  "description": "Treino de peito e tríceps",
   "userId": 1
 }
 ```
 
-### `ExercicioDTO`
+---
+
+## ExerciseDTO
+
 ```json
 {
-  "nome": "Supino reto",
-  "descricao": "Barra livre",
-  "series": 4,
-  "repeticoes": 10,
-  "treinoId": 1
+  "name": "Supino Reto",
+  "description": "Exercício com barra para peitoral",
+  "sets": 4,
+  "reps": 10,
+  "workoutId": 1
 }
 ```
 
-### `DietaDTO`
+---
+
+## DietDTO
+
 ```json
 {
-  "nome": "Dieta hipocalorica",
-  "descricao": "Reducao de calorias",
-  "objetivo": "PERDA_DE_PESO",
-  "caloriasDiarias": 1800,
-  "proteinasGramas": 140,
-  "carboidratosGramas": 180,
-  "gordurasGramas": 60,
+  "name": "Dieta Hipocalórica",
+  "description": "Redução de calorias para perda de peso",
+  "goal": "PERDA_DE_PESO",
+  "dailyCalories": 1800,
+  "proteinGrams": 140,
+  "carbGrams": 180,
+  "fatGrams": 60,
   "userId": 1
 }
 ```
 
-## Observacoes
-- A senha do usuario e ignorada na serializacao de resposta (`@JsonIgnore` em `User.password`).
-- Alguns metodos de busca/relacao lancam `RuntimeException` quando nao encontram dados.
-- Nomes de rotas estao mistos entre plural e singular por implementacao atual (`/users`, `/treino`, `/exercicios`, `/dieta`).
+---
+
+# Observações
+
+* A senha do usuário não é retornada nas respostas (`@JsonIgnore` em `User.password`).
+* Alguns métodos podem lançar `RuntimeException` quando os dados não são encontrados.
+* A API segue **boas práticas REST**:
+
+    * recursos em plural
+    * uso correto dos métodos HTTP
+    * endpoints organizados por recurso.

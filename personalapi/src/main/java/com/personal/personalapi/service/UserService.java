@@ -15,11 +15,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> listarUsuarios() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User salvarUsuario(UserDTO userDTO) {
+    public User saveUser(UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
@@ -33,7 +33,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public void deletarUsuario(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }

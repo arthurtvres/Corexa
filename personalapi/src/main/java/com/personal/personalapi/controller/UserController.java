@@ -18,23 +18,23 @@ public class UserController
     }
 
     @PostMapping
-    public User criar(@RequestBody UserDTO userDTO) {
-        return userService.salvarUsuario(userDTO);
+    public User createUser(@RequestBody UserDTO userDTO) {
+        return userService.saveUser(userDTO);
     }
 
     @GetMapping("/{id}")
-    public User findAlunoById(@PathVariable Long id) {
+    public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
 
     @GetMapping
-    public List<User> listAllAlunos() {
-        return userService.listarUsuarios();
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @DeleteMapping
-    public void deletarUsuario(@RequestParam Long id) {
-        userService.deletarUsuario(id);
+    public void deleteUser(@RequestParam Long id) {
+        userService.deleteUser(id);
     }
 
 }

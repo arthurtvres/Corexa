@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "exercicios")
-public class Exercicio {
+@Table(name = "exercises")
+public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
-    private String descricao;
-    private int series;
-    private int repeticoes;
+    private String name;
+    private String description;
+    private int sets;
+    private int reps;
 
     @ManyToOne
-    @JoinColumn(name = "treino_id")
-    private Treino treino;
+    @JoinColumn(name = "workout_id")
+    private Workout workout;
 }

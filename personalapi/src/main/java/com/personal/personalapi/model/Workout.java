@@ -8,17 +8,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Treino {
+@Table(name = "workouts")
+public class Workout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;
 
-    private String nome;
-    private String descricao;
+    private String name;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User aluno;
+    private User user;
 }
