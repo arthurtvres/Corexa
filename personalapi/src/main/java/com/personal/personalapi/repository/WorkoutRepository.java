@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
-    Optional<Workout> findByUserId(Long userId);
+    boolean existsByUserId(Long userId);
 
+    Optional<Workout> findByUserId(Long userId);
     List<Workout> findAllByUserId(Long userId);
+
 }

@@ -8,12 +8,9 @@ import java.util.Optional;
 import java.util.List;
 
 public interface DietRepository extends JpaRepository<Diet, Long> {
-    // User can have multiple diets, so return list
+    boolean existsByUserId(Long userId);
+
     List<Diet> findAllByUserId(Long userId);
-
-    // Find first diet of a user
     Optional<Diet> findByUserId(Long userId);
-
-    // Find diets by goal
     List<Diet> findByGoal(DietGoal goal);
 }
