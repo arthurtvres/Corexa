@@ -1,6 +1,7 @@
 package com.personal.personalapi.controller;
 
 import com.personal.personalapi.dto.ExerciseDTO;
+import com.personal.personalapi.dto.ExerciseResponseDTO;
 import com.personal.personalapi.model.Exercise;
 import com.personal.personalapi.service.ExerciseService;
 import jakarta.validation.Valid;
@@ -26,17 +27,17 @@ public class ExerciseController {
     }
 
     @GetMapping
-    public List<Exercise> list() {
+    public List<ExerciseResponseDTO> list() {
         return exerciseService.listAll();
     }
 
     @GetMapping("/{id}")
-    public Exercise findById(@PathVariable Long id) {
+    public ExerciseResponseDTO findById(@PathVariable Long id) {
         return exerciseService.findById(id);
     }
 
     @GetMapping("/workout/{workoutId}")
-    public List<Exercise> findAllByWorkoutId(@PathVariable Long workoutId) {
+    public List<ExerciseResponseDTO> findAllByWorkoutId(@PathVariable Long workoutId) {
         return exerciseService.findAllByWorkoutId(workoutId);
     }
 

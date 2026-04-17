@@ -1,6 +1,7 @@
 package com.personal.personalapi.service;
 
 import com.personal.personalapi.dto.WorkoutDTO;
+import com.personal.personalapi.dto.WorkoutResponseDTO;
 import com.personal.personalapi.exception.ResourceNotFoundException;
 import com.personal.personalapi.model.Workout;
 import com.personal.personalapi.model.User;
@@ -20,8 +21,11 @@ public class WorkoutService {
         this.userRepository = userRepository;
     }
 
-    public List<Workout> listAll() {
-        return workoutRepository.findAll();
+    public List<WorkoutResponseDTO> listAll() {
+        return workoutRepository.findAll()
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public Workout save(WorkoutDTO workoutDTO) {
@@ -36,17 +40,30 @@ public class WorkoutService {
         return workoutRepository.save(workout);
     }
 
-    public Workout findById(Long id) {
-        return workoutRepository.findById(id)
+    public WorkoutResponseDTO findById(Long id) {
+        Workout workout = workoutRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Treino nao encontrado"));
+
+        return toResponseDto(workout);
     }
 
-    public List<Workout> findAllByUserId(Long userId) {
-        return workoutRepository.findAllByUserId(userId);
+    public List<WorkoutResponseDTO> findAllByUserId(Long userId) {
+        return workoutRepository.findAllByUserId(userId)
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public void delete(Long id) {
         workoutRepository.deleteById(id);
     }
 
+    private WorkoutResponseDTO toResponseDto(Workout workout) {
+        return new WorkoutResponseDTO(
+                workout.getId(),
+                workout.getName(),
+                workout.getDescription(),
+                workout.getUser() != null ? workout.getUser().getId() : null
+        );
+    }
 }

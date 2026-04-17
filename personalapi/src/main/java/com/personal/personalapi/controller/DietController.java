@@ -1,6 +1,7 @@
 package com.personal.personalapi.controller;
 
 import com.personal.personalapi.dto.DietDTO;
+import com.personal.personalapi.dto.DietResponseDTO;
 import com.personal.personalapi.model.Diet;
 import com.personal.personalapi.service.AuthorizationService;
 import com.personal.personalapi.service.DietService;
@@ -31,17 +32,17 @@ public class DietController {
     }
 
     @GetMapping
-    public List<Diet> list() {
+    public List<DietResponseDTO> list() {
         return dietService.listAll();
     }
 
     @GetMapping("/{id}")
-    public Diet findById(@PathVariable Long id) {
+    public DietResponseDTO findById(@PathVariable Long id) {
         return dietService.findById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public Diet findByUserId(@PathVariable Long userId, @AuthenticationPrincipal User loggedUser) {
+    public DietResponseDTO findByUserId(@PathVariable Long userId, @AuthenticationPrincipal User loggedUser) {
         authorizationService.checkUserAccess(loggedUser, userId);
 
         return dietService.findByUserId(userId);

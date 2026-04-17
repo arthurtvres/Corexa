@@ -1,6 +1,7 @@
 package com.personal.personalapi.service;
 
 import com.personal.personalapi.dto.ExerciseDTO;
+import com.personal.personalapi.dto.ExerciseResponseDTO;
 import com.personal.personalapi.exception.ResourceNotFoundException;
 import com.personal.personalapi.model.Exercise;
 import com.personal.personalapi.model.Workout;
@@ -20,8 +21,11 @@ public class ExerciseService {
         this.workoutRepository = workoutRepository;
     }
 
-    public List<Exercise> listAll() {
-        return exerciseRepository.findAll();
+    public List<ExerciseResponseDTO> listAll() {
+        return exerciseRepository.findAll()
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public Exercise save(ExerciseDTO exerciseDTO) {
@@ -54,17 +58,32 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
-    public Exercise findById(Long id) {
-        return exerciseRepository.findById(id)
+    public ExerciseResponseDTO findById(Long id) {
+        Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exercicio nao encontrado"));
+
+        return toResponseDto(exercise);
     }
 
-    public List<Exercise> findAllByWorkoutId(Long workoutId) {
-        return exerciseRepository.findAllByWorkoutId(workoutId);
+    public List<ExerciseResponseDTO> findAllByWorkoutId(Long workoutId) {
+        return exerciseRepository.findAllByWorkoutId(workoutId)
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public void delete(Long id) {
         exerciseRepository.deleteById(id);
     }
 
+    private ExerciseResponseDTO toResponseDto(Exercise exercise) {
+        return new ExerciseResponseDTO(
+                exercise.getId(),
+                exercise.getName(),
+                exercise.getDescription(),
+                exercise.getSets(),
+                exercise.getReps(),
+                exercise.getWorkout() != null ? exercise.getWorkout().getId() : null
+        );
+    }
 }

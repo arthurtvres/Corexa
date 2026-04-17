@@ -1,6 +1,7 @@
 package com.personal.personalapi.controller;
 
 import com.personal.personalapi.dto.UserDTO;
+import com.personal.personalapi.dto.UserResponseDTO;
 import com.personal.personalapi.exception.BusinessException;
 import com.personal.personalapi.model.User;
 import com.personal.personalapi.service.AuthorizationService;
@@ -30,22 +31,40 @@ public class UserController
     }
 
     @GetMapping
-    public List<User> getAllUsers(@AuthenticationPrincipal User loggedUser) {
+    public List<UserResponseDTO> getAllUsers(@AuthenticationPrincipal User loggedUser) {
         authorizationService.checkIsPersonal(loggedUser);
 
-        return userService.getAllUsers();
+        return userService.getAllUsers()
+                .stream()
+                .map(user -> new UserResponseDTO(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getRole()
+                ))
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable Long id, @AuthenticationPrincipal User loggedUser) {
+    public UserResponseDTO findUserById(@PathVariable Long id, @AuthenticationPrincipal User loggedUser) {
         authorizationService.checkUserAccess(loggedUser, id);
 
-        return userService.findUserById(id);
+        User user = userService.findUserById(id);
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 
     @GetMapping("/me")
-    public User getLoggedUser(@AuthenticationPrincipal User loggedUser) {
-        return loggedUser;
+    public UserResponseDTO getLoggedUser(@AuthenticationPrincipal User loggedUser) {
+        return new UserResponseDTO(
+                loggedUser.getId(),
+                loggedUser.getName(),
+                loggedUser.getEmail(),
+                loggedUser.getRole());
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.personal.personalapi.service;
 
 import com.personal.personalapi.dto.DietDTO;
+import com.personal.personalapi.dto.DietResponseDTO;
 import com.personal.personalapi.exception.ResourceNotFoundException;
 import com.personal.personalapi.model.Diet;
 import com.personal.personalapi.model.User;
@@ -20,8 +21,11 @@ public class DietService {
         this.userRepository = userRepository;
     }
 
-    public List<Diet> listAll() {
-        return dietRepository.findAll();
+    public List<DietResponseDTO> listAll() {
+        return dietRepository.findAll()
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public Diet save(DietDTO dietDTO) {
@@ -60,21 +64,42 @@ public class DietService {
         return dietRepository.save(diet);
     }
 
-    public Diet findById(Long id) {
-        return dietRepository.findById(id)
+    public DietResponseDTO findById(Long id) {
+        Diet diet = dietRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Dieta nao encontrada"));
+
+        return toResponseDto(diet);
     }
 
-    public Diet findByUserId(Long userId) {
-        return dietRepository.findByUserId(userId)
+    public DietResponseDTO findByUserId(Long userId) {
+        Diet diet = dietRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Dieta nao encontrada para o usuario " + userId));
+
+        return toResponseDto(diet);
     }
 
-    public List<Diet> findAllByUserId(Long userId) {
-        return dietRepository.findAllByUserId(userId);
+    public List<DietResponseDTO> findAllByUserId(Long userId) {
+        return dietRepository.findAllByUserId(userId)
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public void delete(Long id) {
         dietRepository.deleteById(id);
+    }
+
+    private DietResponseDTO toResponseDto(Diet diet) {
+        return new DietResponseDTO(
+                diet.getId(),
+                diet.getName(),
+                diet.getDescription(),
+                diet.getGoal(),
+                diet.getDailyCalories(),
+                diet.getProteinGrams(),
+                diet.getCarbGrams(),
+                diet.getFatGrams(),
+                diet.getUser() != null ? diet.getUser().getId() : null
+        );
     }
 }
