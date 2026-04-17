@@ -2,7 +2,11 @@ package com.personal.personalapi.controller;
 
 import com.personal.personalapi.dto.WorkoutDTO;
 import com.personal.personalapi.model.Workout;
+import com.personal.personalapi.service.AuthorizationService;
 import com.personal.personalapi.service.WorkoutService;
+import com.personal.personalapi.exception.BusinessException;
+import com.personal.personalapi.model.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +17,11 @@ import java.util.List;
 @RequestMapping("/workouts")
 public class WorkoutController {
     private final WorkoutService workoutService;
+    private final AuthorizationService authorizationService;
 
-    public WorkoutController(WorkoutService workoutService) {
+    public WorkoutController(WorkoutService workoutService, AuthorizationService authorizationService) {
         this.workoutService = workoutService;
+        this.authorizationService = authorizationService;
     }
 
     @PostMapping
@@ -35,7 +41,9 @@ public class WorkoutController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Workout> findAllByUserId(@PathVariable Long userId) {
+    public List<Workout> findAllByUserId(@PathVariable Long userId, @AuthenticationPrincipal User loggedUser) {
+        authorizationService.checkUserAccess(loggedUser, userId);
+
         return workoutService.findAllByUserId(userId);
     }
 
